@@ -6,6 +6,14 @@ class BooksController < ApplicationController
       books: books
     }
   end
+
+  def show
+    book = Book.find(params[:id])
+    render json: {
+      book: book.title,
+      avatar: url_for(book.book_img)
+    }
+  end
   
   def create
     book = Book.new(book_params)
@@ -24,7 +32,7 @@ class BooksController < ApplicationController
   private
 
   def book_params
-    params.require(:book).permit(:title, :book_img)
+    params.permit(:title, :book_img)
   end
 
 end
