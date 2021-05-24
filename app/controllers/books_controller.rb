@@ -1,14 +1,23 @@
 class BooksController < ApplicationController
   def index
-    @books = Book.all
+    books = Book.all
+
+    render json: {
+      books: books
+    }
   end
   
   def create
-    @book = Book.new(book_params)
-    if @book.save!
-      redirect_to books_url
+    book = Book.new(book_params)
+    if book.save!
+      render json: {
+        status: "success",
+        book: book
+      }
     else
-      render new_book_path
+      redner json: {
+        status: "failed"
+      }
     end
   end
 
