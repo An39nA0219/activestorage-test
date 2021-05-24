@@ -1,0 +1,16 @@
+<h1>新規図書登録</h1>
+<%= form_with model: @book do |f| %>
+  <div>
+    <%= f.label :title, "タイトル" %>
+    <%= f.text_field :title %>
+  </div>
+  <div>
+    <%= f.label :avatar, "画像" %>
+    <%= f.file_field :avatar %>
+  </div>
+  <div>
+    <%= f.submit "送信" %>
+  </div>
+<% end %>
+
+<%= link_to "一覧へ", books_path %>
