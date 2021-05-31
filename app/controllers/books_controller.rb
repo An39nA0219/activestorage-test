@@ -27,7 +27,9 @@ class BooksController < ApplicationController
   def create
     book = Book.new(book_params)
     if book.save!
-      book.parse_base64(book_img_params[:book_img])
+      if book_img_params[:book_img].present?
+        book.parse_base64(book_img_params[:book_img])
+      end
       render json: {
         status: "success",
         book: book

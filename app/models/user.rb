@@ -1,6 +1,6 @@
-class Book < ApplicationRecord
+class User < ApplicationRecord
   before_create :generate_token
-  has_one_attached :book_img
+  has_one_attached :user_img
 
   def generate_token
     self.id = loop do
@@ -9,7 +9,7 @@ class Book < ApplicationRecord
     end
   end
 
-  def parse_base64(img)
+  def parse_base64(img, user_id)
     if img.present?
       # pngなのかjpegなのか拡張子
       content_type = create_extension(img)
@@ -17,7 +17,7 @@ class Book < ApplicationRecord
       contents = img.sub %r/data:((image|application)\/.{3,}),/, ''
       # decode
       decoded_data = Base64.decode64(contents)
-      filename = Time.zone.now.to_s + '.' + content_type
+      filename = user_id + '.' + content_type
       File.open("#{Rails.root}/tmp/#{filename}", 'wb') do |f|
         f.write(decoded_data)
       end
@@ -37,8 +37,7 @@ class Book < ApplicationRecord
   end
   
   def attach_image(filename)
-    book_img.attach(io: File.open("#{Rails.root}/tmp/#{filename}"), filename: filename)
+    user_img.attach(io: File.open("#{Rails.root}/tmp/#{filename}"), filename: filename)
     FileUtils.rm("#{Rails.root}/tmp/#{filename}")
   end
-
 end
