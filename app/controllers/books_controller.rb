@@ -1,6 +1,15 @@
 class BooksController < ApplicationController
   def index
     books = Book.all
+    books = books.map{|book| book.attributes}
+    books.each do |book|
+      b = Book.find(book["id"])
+      if b.book_img.attached?
+        book["img"] = url_for(b.book_img)
+      else
+        book["img"] = nil
+      end
+    end
 
     render json: {
       books: books
