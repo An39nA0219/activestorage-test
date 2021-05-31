@@ -1,5 +1,13 @@
 class Book < ApplicationRecord
+  before_create :generate_token
   has_one_attached :book_img
+
+  def generate_token
+    self.id= loop do
+      random_token = SecureRandom.uuid
+      break random_token unless self.class.exists?(id: random_token)
+    end
+  end
 
   def parse_base64(img)
     if img.present?

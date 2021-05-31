@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
   def index
-    books = Book.all
+    books = Book.all.order(created_at: "DESC")
     books = books.map{|book| book.attributes}
     books.each do |book|
       b = Book.find(book["id"])
